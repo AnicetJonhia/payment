@@ -1,0 +1,65 @@
+# Environnement virtuel
+venv/
+env/
+ENV/
+.venv/
+
+# Fichiers de base de données SQLite
+*.sqlite3
+
+# Fichiers Python compilés
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Migrations (optionnel, si tu veux les ignorer au début)
+# **/migrations/
+# !*/migrations/__init__.py
+
+# Secrets et fichiers de config sensibles
+*.env
+.env.*
+
+# Fichiers de log
+*.log
+
+# Fichiers de cache
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.tmp
+*.bak
+
+# Système d'exploitation
+.DS_Store
+Thumbs.db
+
+# IDEs et éditeurs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Static & Media files (si générés automatiquement)
+staticfiles/
+media/
+
+# Django collectstatic output
+/static/
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+
+# Test results
+.junit/
+.tox/
+.pytest_cache/
