@@ -125,9 +125,9 @@ def stripe_webhook(request):
             order = Order.objects.get(id=order_id)
             order.paid = True
             order.save()
-            logger.info(f"✅ Commande {order.id} marquée comme payée.")
+            print(f"✅ Commande {order.id} marquée comme payée.")
         except Order.DoesNotExist:
-            logger.error(f"❌ Order avec ID {order_id} introuvable.")
+            print(f"❌ Order avec ID {order_id} introuvable.")
 
     return HttpResponse(status=200)
 
@@ -158,10 +158,10 @@ class RefundOrderView(APIView):
 
             order.refunded = True
             order.save()
-            logger.info(f"🔄 Remboursement de la commande {order.id} effectué.")
+
             return Response({"message": "Commande remboursée.", "refund": refund})
         except Order.DoesNotExist:
             return Response({"error": "Commande introuvable."}, status=404)
         except stripe.error.StripeError as e:
-            logger.error(f"Erreur de remboursement Stripe: {str(e)}")
+
             return Response({"error": "Erreur Stripe."}, status=500)
