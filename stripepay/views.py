@@ -1,4 +1,4 @@
-import logging
+
 
 import stripe
 from django.conf import settings
@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from .models import Order
 from .serializers import PaymentIntentRequestSerializer, StripeSessionResponseSerializer
 
-logger = logging.getLogger(__name__)
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 endpoint_secret = settings.STRIPE_WEBHOOK_SECRET

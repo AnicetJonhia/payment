@@ -36,8 +36,10 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET")
-PUBLIC_API_URL=env("PUBLIC_API_URL")
-PUBLIC_CLIENT_URL=env("PUBLIC_CLIENT_URL")
+PUBLIC_API_URL = env("PUBLIC_API_URL")
+PUBLIC_CLIENT_URL = env("PUBLIC_CLIENT_URL")
+PAYPAL_CLIENT_ID = env("PAYPAL_CLIENT_ID")
+PAYPAL_CLIENT_SECRET = env("PAYPAL_CLIENT_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -56,7 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'stripepay'
+    'stripepay',
+    'paypal',
 ]
 
 MIDDLEWARE = [

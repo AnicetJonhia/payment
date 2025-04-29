@@ -92,7 +92,7 @@ POST /api/payment/create-checkout-session/
 ### 🔹 Créer un PaymentIntent (Stripe Elements)
 
 ```
-POST /api/payment/create-payment-intent/
+POST /api/stripepay/create-payment-intent/
 ```
 
 **Payload**
@@ -117,14 +117,14 @@ POST /api/payment/create-payment-intent/
 ### 🔹 Stripe Webhook
 
 ```
-POST /api/payment/webhook/
+POST /api/stripepay/webhook/
 ```
 
 Stripe enverra les événements ici, notamment `checkout.session.completed` pour marquer une commande comme payée.
 
 Pour tester en local :
 ```bash
-stripe listen --forward-to localhost:8000/api/payment/webhook/
+stripe listen --forward-to localhost:8000/api/stripepay/webhook/
 ```
 
 Une fois la commande lancée, tu verras dans la console une ligne du type :
@@ -137,15 +137,15 @@ Copie la valeur whsec_... et reporte-la dans ton fichier .env sous la clé STRIP
 
 ### 🔹 Pages de retour
 
-- **Succès :** `GET /api/payment/success/`  
-- **Annulation :** `GET /api/payment/cancel/`
+- **Succès :** `GET /api/stripepay/success/`  
+- **Annulation :** `GET /api/stripepay/cancel/`
 
 ---
 
 ### 🔹 Rembourser une commande
 
 ```
-POST /api/payment/refund/<order_id>/
+POST /api/stripepay/refund/<order_id>/
 ```
 
 **Réponse**
