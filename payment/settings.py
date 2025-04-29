@@ -36,6 +36,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET")
+PUBLIC_API_URL=env("PUBLIC_API_URL")
+PUBLIC_CLIENT_URL=env("PUBLIC_CLIENT_URL")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -53,10 +55,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'stripepay'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -140,3 +144,13 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# comment for developpement
+
+
+CORS_ALLOWED_ORIGINS = [
+    PUBLIC_API_URL,
+    PUBLIC_CLIENT_URL,
+]
+
+

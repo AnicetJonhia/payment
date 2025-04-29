@@ -1,41 +1,37 @@
+import logging
+
 import stripe
-import json
 from django.conf import settings
 from django.http import HttpResponse
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from .serializers import PaymentIntentRequestSerializer
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import Order
-import logging
+from .serializers import PaymentIntentRequestSerializer, StripeSessionResponseSerializer
+
 logger = logging.getLogger(__name__)
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
 
 class CreateCheckoutSessionView(APIView):
-    """Créer une session Stripe dynamiquement à partir du frontend"""
     def post(self, request):
-        data = request.data
+        serializer = PaymentIntentRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        # On récupère les informations envoyées par le frontend
-        product_name = data.get('product_name')
-        amount = data.get('amount')  # en centimes
-        quantity = data.get('quantity', 1)
+        validated_data = serializer.validated_data
+        product_name = validated_data['product_name']
+        amount = validated_data['amount']
+        quantity = validated_data['quantity']
 
-        if not product_name or not amount:
-            return Response({"error": "product_name et amount sont requis."}, status=400)
-
-        # On crée une commande
         order = Order.objects.create(
             product_name=product_name,
             amount=amount,
             quantity=quantity,
         )
 
-        # On crée la session Stripe
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
@@ -52,19 +48,20 @@ class CreateCheckoutSessionView(APIView):
             metadata={'order_id': str(order.id)},
         )
 
-        # On stocke la session_id Stripe
         order.stripe_checkout_session_id = session.id
         order.save()
 
-        return Response({
+        response_serializer = StripeSessionResponseSerializer({
             'id': session.id,
-            'url': session.url
+            'url': session.url,
         })
+
+        return Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
 class CreatePaymentIntentView(APIView):
     """Créer un PaymentIntent pour Stripe Elements"""
     def post(self, request):
-        # Valider les données de la requête avec le serializer
+
         serializer = PaymentIntentRequestSerializer(data=request.data)
         if serializer.is_valid():
             product_name = serializer.validated_data['product_name']

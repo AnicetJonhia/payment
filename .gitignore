@@ -18,7 +18,7 @@ __pycache__/
 
 # Secrets et fichiers de config sensibles
 *.env
-.env.*
+.env
 
 # Fichiers de log
 *.log
