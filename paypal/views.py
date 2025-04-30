@@ -58,7 +58,6 @@ class PayPalCreateOrderView(APIView):
             order.paypal_order_id = paypal_id
             order.save()
 
-            # Sérialiser et renvoyer
             out_serializer = OrderSerializer(order)
             return Response({
                 'order': out_serializer.data,
